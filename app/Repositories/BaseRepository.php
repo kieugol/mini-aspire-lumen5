@@ -15,7 +15,7 @@ abstract class BaseRepository extends L5Repository
     /**
      * @var array $limitPerPage The limitation of record on per page
      */
-    protected $limitPerPage = [10, 20, 30, 40, 50, 100, 200];
+    protected $limitPerPage = [10, 20, 30, 40, 50, 100, 200, 300, 400, 500];
     
     /**
      * @var array $softAble Allowing order asc or desc
@@ -23,6 +23,21 @@ abstract class BaseRepository extends L5Repository
     protected $orderAble = ['DESC', 'desc', 'ASC', 'asc'];
     
     /**
+     * Array list sortable of column
+     *
+     * @var array
+     */
+    protected $sortAble = [];
+    
+    
+    public function insertMultiple(array $data)
+    {
+        $this->model->insert($data);
+    }
+    
+    /**
+     * Format pagination
+     *
      * @param LengthAwarePaginator $data
      *
      * @return array
@@ -56,7 +71,7 @@ abstract class BaseRepository extends L5Repository
         }
         
         foreach ($search as $key => $val) {
-            if (!isset($fieldSearch[$key]) || empty($val)) {
+            if (!isset($fieldSearch[$key]) || trim($val) === '') {
                 continue;
             }
             
@@ -69,7 +84,7 @@ abstract class BaseRepository extends L5Repository
                         $val = '%' . $val . '%';
                     }
                     $query->where(DB::raw($fieldSearch[$key]['field']), $compare, $val);
-                    
+    
                     break;
                 
                 case 'date':
@@ -92,5 +107,21 @@ abstract class BaseRepository extends L5Repository
         }
         
         return $query;
+    }
+    
+    public function getLength(array $params)
+    {
+        return isset($params['limit']) && in_array($params['limit'], $this->limitPerPage) ? $params['limit'] : $this->limitPerPage[0];
+    }
+    
+    public function getOrder(array $params)
+    {
+        return isset($params['order']) && in_array($params['order'], $this->orderAble) ? $params['order'] : $this->orderAble[0];
+    }
+    
+    public function getSortColumn(array $params)
+    {
+        $this->sortAble = $this->model->getFillable();
+        return isset($params['sort']) && in_array($params['sort'], $this->sortAble[]) ? $params['sort'] : $this->model->getKeyName();;
     }
 }

@@ -10,14 +10,22 @@ use Illuminate\Http\Response;
  */
 trait ApiResponse
 {
-    public static function sendResponse($result = null, $statusCode = Response::HTTP_OK)
+    /**
+     * Send response data to client
+     *
+     * @param array $result
+     * @param int  $statusCode
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function sendResponse(array $result, $statusCode = Response::HTTP_OK)
     {
-        $dataReturn = [
+        $body = [
             CODE_KEY    => $result[CODE_KEY] ?? $statusCode,
             MESSAGE_KEY => $result[MESSAGE_KEY] ?? '',
             DATA_KEY    => $result[DATA_KEY] ?? null,
         ];
         
-        return response()->json($dataReturn, $statusCode);
+        return response()->json($body, $statusCode);
     }
 }

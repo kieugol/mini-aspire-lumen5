@@ -2,8 +2,6 @@
 
 namespace App\Helpers;
 
-use Tymon\JWTAuth\Facades\JWTAuth;
-
 trait CommonHelper
 {
     
@@ -29,22 +27,5 @@ trait CommonHelper
         }
         
         return implode('<br>', $errMgs);
-    }
-    
-    /**
-     * Get user information with key
-     *
-     * @param string $key
-     *
-     * @return null
-     */
-    public function getAuth($key = '')
-    {
-        try {
-            $user = JWTAuth::user();
-            return $key != '' ? (empty($user->{$key}) ? null : $user->{$key}) : $user;
-        } catch (\Exception $ex) {
-            return null;
-        }
     }
 }

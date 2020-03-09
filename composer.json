@@ -10,7 +10,6 @@
         "vlucas/phpdotenv": "~2.2",
         "doctrine/orm": "2.5.*",
         "guzzlehttp/guzzle": "~6.0",
-        "tymon/jwt-auth": "^1.0@dev",
         "laravelista/lumen-vendor-publish": "^2.1",
         "prettus/l5-repository": "^2.6"
     },

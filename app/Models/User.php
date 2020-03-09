@@ -2,24 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Auth\Authenticatable;
-use Laravel\Lumen\Auth\Authorizable;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use Illuminate\Auth\Passwords\CanResetPassword;
 
-class User extends BaseModel implements CanResetPasswordContract
+class User extends BaseModel
 {
-    use Authenticatable, Authorizable, CanResetPassword;
-    
     protected $table = 'user';
+    
     protected $fillable = [
-        'id',
-        'username',
+        'name',
         'email',
-        'password',
-        'first_name',
-        'last_name',
-        'full_name',
         'birthday',
         'phone',
         'address',
@@ -30,6 +20,10 @@ class User extends BaseModel implements CanResetPasswordContract
     ];
     
     protected $hidden = [
-        'password',
     ];
+    
+    public function loan()
+    {
+        return $this->hasMany(Loan::class, 'user_id')->select(['id', 'client_id', 'user_id']);
+    }
 }

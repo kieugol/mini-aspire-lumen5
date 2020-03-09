@@ -59,18 +59,9 @@ $app->singleton(
 |
 */
 
- $app->middleware([
-    App\Http\Middleware\CorsMiddleware::class
- ]);
- 
-$app->routeMiddleware([
-    'jwt.auth'=> App\Middleware\JwtAuthMiddleware::class,
-]);
-
 
 $app->configure('database');
 $app->configure('auth');
-$app->configure('jwt');
 
 /*
 |--------------------------------------------------------------------------
@@ -82,17 +73,11 @@ $app->configure('jwt');
 | totally optional, so you are not required to uncomment this line.
 |
 */
-// JWT Authentication
-
-$app->alias('JWTAuth', \Tymon\JWTAuth\Facades\JWTAuth::class);
-$app->alias('JWTFactory', Tymon\JWTAuth\Facades\JWTFactory::class);
-$app->alias('config', \Illuminate\Support\Facades\Config::class);
 
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);
 $app->register(App\Providers\HelperServiceProvider::class);
-$app->register(\Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 $app->register(Prettus\Repository\Providers\LumenRepositoryServiceProvider::class);
 
 /*

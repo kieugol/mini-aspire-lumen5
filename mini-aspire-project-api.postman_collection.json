@@ -1,0 +1,229 @@
+{
+	"info": {
+		"_postman_id": "dd5acfa4-b412-4660-a1d3-887167a2a672",
+		"name": "mini-aspire-project-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get list user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://krol.diqit.io/api/v1/user/all",
+					"protocol": "https",
+					"host": [
+						"krol",
+						"diqit",
+						"io"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2p1bXBib3hfdGVzdC5kaXFpdC5pby9hcGkvdjEvYXV0aC9sb2dpbiIsImlhdCI6MTU4Mjc4NjI2MywiZXhwIjoxNTgyNzg5ODYzLCJuYmYiOjE1ODI3ODYyNjMsImp0aSI6Im9yUFRxM2dMRXNRcmJrUzciLCJzdWIiOjUsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.wWyv3Prh1AD5FUvo8vEPBOj0s8XaCbfGkwwNjPHPbMA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"name\": \"Rol Kieu\",\r\n        \"email\": \"krol@diqit.io\",\r\n        \"birthday\": \"1990-09-22\",\r\n        \"phone\": \"09174747775\",\r\n        \"address\": \"HCM City\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://krol.diqit.io/api/v1/user",
+					"protocol": "https",
+					"host": [
+						"krol",
+						"diqit",
+						"io"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Loan",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"user\": 3,\n  \"repayment_frequency\": 2,\n  \"loan_term\": 2,\n  \"interest_rate\": 6,\n  \"amount\": 10000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://krol.diqit.io/api/v1/loan",
+					"protocol": "https",
+					"host": [
+						"krol",
+						"diqit",
+						"io"
+					],
+					"path": [
+						"api",
+						"v1",
+						"loan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "repayment for loan",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"user\": 3,\n  \"loan\": 1,\n  \"payment_date\": \"2021-2-20\",\n  \"amount\": 880\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://krol.diqit.io/api/v1/loan-payment/repayment",
+					"protocol": "https",
+					"host": [
+						"krol",
+						"diqit",
+						"io"
+					],
+					"path": [
+						"api",
+						"v1",
+						"loan-payment",
+						"repayment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get list loan",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://krol.diqit.io/api/v1/loan",
+					"protocol": "https",
+					"host": [
+						"krol",
+						"diqit",
+						"io"
+					],
+					"path": [
+						"api",
+						"v1",
+						"loan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get list loan by user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://krol.diqit.io/api/v1/loan/by-user/3",
+					"protocol": "https",
+					"host": [
+						"krol",
+						"diqit",
+						"io"
+					],
+					"path": [
+						"api",
+						"v1",
+						"loan",
+						"by-user",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get list loan payment by loan",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://krol.diqit.io/api/v1/loan-payment/by-loan/1?is_active=1",
+					"protocol": "https",
+					"host": [
+						"krol",
+						"diqit",
+						"io"
+					],
+					"path": [
+						"api",
+						"v1",
+						"loan-payment",
+						"by-loan",
+						"1"
+					],
+					"query": [
+						{
+							"key": "is_active",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

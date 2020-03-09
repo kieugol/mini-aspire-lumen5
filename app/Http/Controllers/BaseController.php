@@ -4,11 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller;
+use App\Libraries\ApiResponse;
+
 
 class BaseController extends Controller
 {
+    use ApiResponse;
+    
     /**
-     * @var
+     * Object request
+     *
+     * @var Request
      */
     protected $request;
     

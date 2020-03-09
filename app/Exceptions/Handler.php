@@ -14,6 +14,7 @@ use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use App\Libraries\ApiResponse;
 use App\Helpers\CommonHelper;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class Handler extends ExceptionHandler
 {
@@ -53,28 +54,31 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        // Customize response when exception is instance of ValidationException
+        // Customize response correspond to some below exception
+        
         if ($e instanceof ValidationException && $e->getResponse()) {
             $errors = json_decode($e->getResponse()->getContent(), true);
-            $errors = $this->formatErrorsMessage($errors);
 
-            return $this->sendResponse(['message' => $errors], Response::HTTP_BAD_REQUEST);
+            return $this->sendResponse([MESSAGE_KEY => $this->formatErrorsMessage($errors)], Response::HTTP_BAD_REQUEST);
         }
 
         if ($e instanceof NotFoundHttpException) {
-            return $this->sendResponse(['message' => 'Page not found'], Response::HTTP_NOT_FOUND);
+            return $this->sendResponse([MESSAGE_KEY => trans('message.page_not_found')], Response::HTTP_NOT_FOUND);
         }
 
         if ($e instanceof HttpException) {
-            return $this->sendResponse(['message' => $e->getMessage()], $e->getStatusCode());
+            return $this->sendResponse([MESSAGE_KEY => $e->getMessage()], $e->getStatusCode());
         }
     
         if ($e instanceof QueryException) {
-            return $this->sendResponse(['message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+            Log::error("{$e->getMessage()} At {$e->getFile()} ({$e->getLine()})");
+            Log::error($e->getSql());
+            return $this->sendResponse([MESSAGE_KEY => trans('message.server_error')], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         
         if ($e instanceof ErrorException) {
-            return $this->sendResponse(['message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+            Log::error("{$e->getMessage()} At {$e->getFile()} ({$e->getLine()})");
+            return $this->sendResponse([MESSAGE_KEY => trans('message.server_error')], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return parent::render($request, $e);

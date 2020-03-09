@@ -18,7 +18,7 @@ $app->get('/', function () use ($app) {
     return $app->version();
 });
 
-// Management users
+// User management
 $app->group([
     'prefix'    => "$apiPrefix/user",
     'namespace' => $namespace
@@ -27,20 +27,49 @@ $app->group([
         'uses' => 'UserController@getList',
         'as'   => 'get-list-user'
     ]);
-    $app->get('/{id:[0-9]+}', [
-        'uses' => 'UserController@getDetail',
-        'as'   => 'get-detail-user'
+    $app->get('/all', [
+        'uses' => 'UserController@getAll',
+        'as'   => 'get-all-user'
     ]);
     $app->post('/', [
         'uses' => 'UserController@create',
         'as'   => 'create-user'
     ]);
-    $app->put('/{id:[0-9]+}', [
-        'uses' => 'UserController@update',
-        'as'   => 'update-user',
+});
+
+// Loan management
+$app->group([
+    'prefix'    => "$apiPrefix/loan",
+    'namespace' => $namespace
+], function () use ($app) {
+    $app->get('/', [
+        'uses' => 'LoanController@getList',
+        'as'   => 'get-list-loan'
     ]);
-    $app->delete('/{id:[0-9]+}', [
-        'uses' => 'UserController@delete',
-        'as'   => 'delete-user',
+    $app->get('/by-user/{userId:[0-9]+}', [
+        'uses' => 'LoanController@getListByUser',
+        'as'   => 'get-list-loan-by-user'
+    ]);
+    $app->get('/{id:[0-9]+}', [
+        'uses' => 'LoanController@getDetail',
+        'as'   => 'get-detail-loan'
+    ]);
+    $app->post('/', [
+        'uses' => 'LoanController@create',
+        'as'   => 'create-loan'
+    ]);
+});
+
+$app->group([
+    'prefix'    => "$apiPrefix/loan-payment",
+    'namespace' => $namespace
+], function () use ($app) {
+    $app->get('/by-loan/{loanId:[0-9]+}', [
+        'uses' => 'LoanPaymentController@getListByLoan',
+        'as'   => 'get-list-loan-by-user'
+    ]);
+    $app->post('/repayment', [
+        'uses' => 'LoanPaymentController@repayment',
+        'as'   => 'repayment-for-loan'
     ]);
 });

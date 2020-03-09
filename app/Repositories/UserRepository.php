@@ -4,6 +4,10 @@ namespace App\Repositories;
 
 use App\Models\User;
 
+/**
+ * Class UserRepository
+ * @package App\Repositories
+ */
 class UserRepository extends BaseRepository
 {
     /**
@@ -16,64 +20,42 @@ class UserRepository extends BaseRepository
         return User::class;
     }
     
+    /**
+     * Get list user with pagination
+     *
+     * @param $params
+     *
+     * @return array
+     */
     public function getList($params)
     {
-        $order  = 'id';
+        $order  = $this->getSortColumn($params);
         $length = $this->getLength($params);
         $sort   = $this->getOrder($params);
         
         $query = $this->model
             ->select("*")
-            ->where(User::getCol('is_delete'), '<>', STATUS_ACTIVE)
-            ->where(User::getCol('username'), '<>', ROLES_ROOT_NAME)
+            ->where(User::getCol('is_active'), ACTIVE)
+            ->where(User::getCol('is_delete'), INACTIVE)
             ->orderBy($order, $sort)
-            ->with(['roles', 'user'])
             ->paginate($length);
         
         return $this->formatPagination($query);
     }
     
+    /**
+     * Get all valid user
+     *
+     * @return mixed
+     */
     public function getAll()
     {
-        $query = $this->model
-            ->select("*")
-            ->where(User::getCol('username'), '<>', ROLES_ROOT_NAME)
-            ->where(User::getCol('is_delete'), '<>', STATUS_ACTIVE)
-            ->with(['roles', 'user'])
+        $result = $this->model
+            ->select(['id', 'name', 'email', 'phone'])
+            ->where(User::getCol('is_active'), ACTIVE)
+            ->where(User::getCol('is_delete'), INACTIVE)
             ->get();
         
-        return $query;
-    }
-    
-    public function getDetail($id)
-    {
-        $query = $this->model
-            ->select("*")
-            ->where(User::getCol('username'), '<>', ROLES_ROOT_NAME)
-            ->where(User::getCol('is_delete'), '<>', STATUS_ACTIVE)
-            ->where(User::getCol('id'), $id)
-            ->with([
-                'roles' => function($subQuery) {
-                    $subQuery->select('id','name');
-                },
-                'user_client' =>  function($subQuery) {
-                    $subQuery->select('client_id', 'user_id');
-                }
-            ])
-            ->first();
-        
-        return $query;
-    }
-    
-    public function getUserForDelete($id)
-    {
-        $query = $this->model
-            ->select("*")
-            ->where(User::getCol('id'), $id)
-            ->where(User::getCol('is_delete'), '<>', STATUS_ACTIVE)
-            ->where(User::getCol('username'), '<>', ROLES_ROOT_NAME)
-            ->first();
-        
-        return $query;
+        return $result;
     }
 }
