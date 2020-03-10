@@ -37,7 +37,8 @@ Documentation for the framework can be found on the [Lumen website](http://lumen
    - Run migration: php artisan migrate --force
    - Setup apache, nginx to use local to run source code can refer here: [Lumen Installation](https://lumen.laravel.com/docs/5.2/installation)
 
-Test api domain: https://krol.diqit.io/api/v1 
+- Test api domain: https://krol.diqit.io/api/v1
+- Test collection sample on Postman [mini-aspire-project-api.postman_collection.json](https://github.com/kieugol/mini-aspire-lumen5/blob/master/mini-aspire-project-api.postman_collection.json)
     
 ## Usage
 ### User
