@@ -169,13 +169,17 @@ Test api domain: https://krol.diqit.io/api/v1
    ```
 #### Add payment for loan
  - Using get method: https://krol.diqit.io/api/v1/loan-payment/repayment
- - Sample params: 
+ - Sample params:
+    - user: the user id
+    - loan: loan id belongs to user
+    - payment_date:  the period need to pay
+    - amount: the money need to pay for 1 period
    ```json
     {
-      "user": 1, // user id
-      "loan": 1, // loan id belongs to user
-      "payment_date": "2020-3-01", // the period need to pay
-      "amount": 880 // the money need to pay for 1 period
+      "user": 1,
+      "loan": 1,
+      "payment_date": "2020-3-01",
+      "amount": 880
     }
    ```
   - Sample output: 
@@ -212,7 +216,6 @@ Test api domain: https://krol.diqit.io/api/v1
           "created_at": "2020-03-09 16:13:17",
           "updated_at": "2020-03-09 16:13:17"
         }
-        ...
       ]
     }
    ```
