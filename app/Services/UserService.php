@@ -15,13 +15,6 @@ class UserService extends BaseService
         $this->userRep = $userRep;
     }
     
-    public function getAll()
-    {
-        $this->setData($this->userRep->getAll());
-        
-        return $this->getResponseData();
-    }
-    
     public function getList(Request $request)
     {
         $this->setData($this->userRep->getList($request->all()));

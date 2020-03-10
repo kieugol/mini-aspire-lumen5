@@ -13,4 +13,5 @@ return [
     'payment_date_incorrect'     => 'The Payment Date is invalid.',
     'amount_payment_invalid'     => 'The Amount is invalid.',
     'add_repayment_successfully' => 'Your payment updated successfully.',
+    'invalid_loan'               => 'The loan is invalid',
 ];

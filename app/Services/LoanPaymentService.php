@@ -42,8 +42,8 @@ class LoanPaymentService extends BaseService
     public function repayment(Request $request)
     {
         $loanDetail = $this->loanRep->findWhere(['id' => $request['loan'], 'user_id' => $request['user']]);
-        if (empty($loanDetail)) {
-            abort(Response::HTTP_BAD_REQUEST, trans('message.loan_not_exist'));
+        if ($loanDetail->isEmpty()) {
+            abort(Response::HTTP_BAD_REQUEST, trans('message.invalid_loan'));
         }
         
         $paymentDate       = date("Y-m-d", strtotime($request['payment_date']));

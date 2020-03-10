@@ -27,10 +27,6 @@ $app->group([
         'uses' => 'UserController@getList',
         'as'   => 'get-list-user'
     ]);
-    $app->get('/all', [
-        'uses' => 'UserController@getAll',
-        'as'   => 'get-all-user'
-    ]);
     $app->post('/', [
         'uses' => 'UserController@create',
         'as'   => 'create-user'

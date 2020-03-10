@@ -42,20 +42,4 @@ class UserRepository extends BaseRepository
         
         return $this->formatPagination($query);
     }
-    
-    /**
-     * Get all valid user
-     *
-     * @return mixed
-     */
-    public function getAll()
-    {
-        $result = $this->model
-            ->select(['id', 'name', 'email', 'phone'])
-            ->where(User::getCol('is_active'), ACTIVE)
-            ->where(User::getCol('is_delete'), INACTIVE)
-            ->get();
-        
-        return $result;
-    }
 }

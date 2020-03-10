@@ -1,21 +1,22 @@
 ## MiniAspire project with Lumen 5.2 Framework
 Documentation for the framework can be found on the [Lumen website](http://lumen.laravel.com/docs).
 ## Purpose
-* Set up the database with Doctrine.
-* Run a command which accepts the feed urls(separated by comma) to grab items and save items data into DB.
-* Show list of items which were grabbed by running the command line.
-* Filter items by category name on the list of items.
+* Build a simple API that allows to handle user loans: users, loans, and repayments
+     - The loan term calculates as default is year.
+     - The payment will pay for loan by period is 12 months(1 year).
+     - The interest rate can be dynamic: year, month, quarter.
+     - The user can create many loans and make repayments by each period.
 ## Contents
 - [Installation](#installation)
 - [Usage](#usage)
     - [User](#user)
         - [Create a User](#create-a-user)
         - [Get List User](#get-list-user)
-        - [Get All User](#get-all-user)
     - [loan](#loan)
         - [Create a loan](#create-a-loan)
         - [Get list loan](#get-list-loan)
         - [Get list Loan By User](#get-list-loan-by-user)
+        - [Add payment for loan](#add-payment-for-loan)
         - [Get list loan payment by loan](#get-list-loan-payment-by-loan)
 ## Installation
 1. Requirement:
@@ -34,14 +35,14 @@ Documentation for the framework can be found on the [Lumen website](http://lumen
         DB_PASSWORD=root
         ```
    - Run migration: php artisan migrate --force
-   
+   - Setup apache, nginx to use local to run source code can refer here: [Lumen Installation](https://lumen.laravel.com/docs/5.2/installation)
 
 Test api domain: https://krol.diqit.io/api/v1 
     
 ## Usage
 ### User
 #### Create a User
-  - using post method: https://krol.diqit.io/api/v1/user
+  - Using post method: https://krol.diqit.io/api/v1/user
   - Sample params: 
     ```json
       {
@@ -52,18 +53,32 @@ Test api domain: https://krol.diqit.io/api/v1
           "address": "HCM City"
       }
     ```
+    - Sample output: 
+        ```json
+        {
+            "code": 200,
+            "message": "Created successfully.",
+            "data": {
+                "name": "Rol Kieu",
+                "email": "krol@diqit.io",
+                "birthday": "1990-09-22",
+                "phone": "09174747775",
+                "address": "HCM City",
+                "updated_at": "2020-03-10 03:37:13",
+                "created_at": "2020-03-10 03:37:13",
+                "id": 2
+            }
+        }
+        ```
 #### Get List User
-  - using get method: https://krol.diqit.io/api/v1/user?page=1&limit=10
+  - Using get method: https://krol.diqit.io/api/v1/user?page=1&limit=10
   - Sample params: 
        - page: 1,2,3
        - limit: 10,20,30..500
-#### Get All User
- - using get method: https://krol.diqit.io/api/v1/user/all
- - Sample params: 
        
 ### loan
 #### Create a Loan
-  - using post method: https://krol.diqit.io/api/v1/loan
+  - Using post method: https://krol.diqit.io/api/v1/loan
   - Sample params: 
     ```json
         {
@@ -74,16 +89,130 @@ Test api domain: https://krol.diqit.io/api/v1
           "amount": 10000
         }
     ```
-    -  user: go to api [Get all user](#get-all-user)
-    -  repayment_frequency: go to api [Get all repayment frequency](#get-all-user)
+        -  user: go to api [Get list user](#get-list-user)
+        -  repayment_frequency: go to api [Get all repayment frequency](#get-all-user)
+- Sample output: 
+    ```json
+        {
+            "code": 200,
+            "message": "Created successfully.",
+            "data": {
+                "id": 1
+            }
+        }
+    ```
 #### Get list loan
-  - using get method: https://krol.diqit.io/api/v1/loan?page=1&limit=10
+  - Using get method: https://krol.diqit.io/api/v1/loan?page=1&limit=10
   - Sample params: 
        - page: 1,2,3
        - limit: 10,20,30..500
-       
+  - Sample output: 
+   ```json
+    {
+        "code": 200,
+        "message": "",
+        "data": {
+            "page": 1,
+            "length": 10,
+            "total_record": 1,
+            "total_page": 1,
+            "rows": [
+                {
+                    "id": 1,
+                    "user_id": 1,
+                    "term": 2,
+                    "start_date": "2020-03-09",
+                    "end_date": "2022-03-09",
+                    "repayment_frequency": "Quarter",
+                    "Loan_status": "Paying",
+                    "interest_rate": 6,
+                    "amount": 10000,
+                    "payment_amount": 12500,
+                    "interest_amount": 2500,
+                    "remarks": "",
+                    "created_at": "2020-03-09 16:13:17",
+                    "updated_at": "2020-03-09 16:14:36"
+                }
+            ]
+        }
+    }
+   ```
 #### Get list Loan By User
- - using get method: https://krol.diqit.io/api/v1/loan/by-user/{user_id}
+ - Using get method: https://krol.diqit.io/api/v1/loan/by-user/{user_id}
  - Sample params: 
       - user_id: 1,2,3
       - limit: 10,20,30..500
+  - Sample output: 
+   ```json
+    {
+        "code": 200,
+        "message": "",
+        "data": [
+            {
+                "id": 1,
+                "user_id": 1,
+                "term": 2,
+                "start_date": "2020-03-09",
+                "end_date": "2022-03-09",
+                "repayment_frequency": "Quarter",
+                "Loan_status": "Paying",
+                "interest_rate": 6,
+                "amount": 10000,
+                "payment_amount": 12500,
+                "interest_amount": 2500,
+                "remarks": "",
+                "created_at": "2020-03-09 16:13:17",
+                "updated_at": "2020-03-09 16:14:36"
+            }
+        ]
+    }
+   ```
+#### Add payment for loan
+ - Using get method: https://krol.diqit.io/api/v1/loan-payment/repayment
+ - Sample params: 
+   ```json
+    {
+      "user": 1, // user id
+      "loan": 1, // loan id belongs to user
+      "payment_date": "2020-3-01", // the period need to pay
+      "amount": 880 // the money need to pay for 1 period
+    }
+   ```
+  - Sample output: 
+   ```json
+    {
+        "code": 200,
+        "message": "Your payment updated successfully.",
+        "data": ""
+    }
+   ```
+#### Get list loan payment by loan
+ - Using get method: https://krol.diqit.io/api/v1/loan-payment/by-loan/{loan_id}
+ - Sample params: 
+      - loan_id: 1,2,3 // get from list loan
+      - is_active: [0,1] // 0 => the payment by period still not paid, 1=> already paid
+  - Sample output: 
+   ```json
+    {
+      "code": 200,
+      "message": "",
+      "data": [
+        {
+          "id": 2,
+          "loan_id": 1,
+          "due_date": "2020-04-30",
+          "amount": 608.34,
+          "principal_amount": 416.67,
+          "interest_amount": 191.67,
+          "balance": 9166.66,
+          "remarks": "",
+          "is_active": 0,
+          "created_by": 0,
+          "updated_by": 0,
+          "created_at": "2020-03-09 16:13:17",
+          "updated_at": "2020-03-09 16:13:17"
+        }
+        ...
+      ]
+    }
+   ```

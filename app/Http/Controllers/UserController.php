@@ -17,14 +17,6 @@ class UserController extends BaseController
         $this->userService = $userServiceInstance;
     }
     
-    public function getAll()
-    {
-        $result = $this->userService->getAll();
-        
-        return $this->sendResponse($result[RESPONSE_KEY], $result[STT_CODE_KEY]);
-        
-    }
-    
     public function getList()
     {
         $result = $this->userService->getList($this->request);
