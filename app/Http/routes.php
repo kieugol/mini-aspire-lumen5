@@ -60,6 +60,7 @@ $app->group([
     ]);
 });
 
+// Loan Payment management
 $app->group([
     'prefix'    => "$apiPrefix/loan-payment",
     'namespace' => $namespace
@@ -71,5 +72,16 @@ $app->group([
     $app->post('/repayment', [
         'uses' => 'LoanPaymentController@repayment',
         'as'   => 'repayment-for-loan'
+    ]);
+});
+
+// Repayment frequency management
+$app->group([
+    'prefix'    => "$apiPrefix/repayment-frequency",
+    'namespace' => $namespace
+], function () use ($app) {
+    $app->get('/all', [
+        'uses' => 'RepaymentFrequencyController@getAll',
+        'as'   => 'get-all-repayment-frequency'
     ]);
 });
